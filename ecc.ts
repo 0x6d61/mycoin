@@ -26,7 +26,7 @@ export class FieldElement {
         return false
     }
     public add(other:FieldElement):FieldElement {
-        if(this.prime != other.prime) {
+        if(this.prime !== other.prime) {
             throw `Cannot add two numbers in different Fields`
         }
     
@@ -35,7 +35,7 @@ export class FieldElement {
     }
 
     public sub(other:FieldElement):FieldElement {
-        if(this.prime != other.prime) {
+        if(this.prime !== other.prime) {
             throw `Cannot add two numbers in different Fields`
         }
 
@@ -48,7 +48,7 @@ export class FieldElement {
 
 
     public mul(other:FieldElement):FieldElement {
-        if(this.prime != other.prime) {
+        if(this.prime !== other.prime) {
             throw `Cannot add two numbers in different Fields`
         }
 
@@ -58,7 +58,7 @@ export class FieldElement {
     }
 
     public div(other:FieldElement):FieldElement {
-        if(this.prime != other.prime) {
+        if(this.prime !== other.prime) {
             throw `Cannot add two numbers in different Fields`
         }
 
@@ -100,7 +100,14 @@ export class Point {
     }
 
     public eq(other:Point) {
-        
+        return this.x === other.x && 
+        this.y === other.y &&
+        this.a === other.a &&
+        this.b === other.b 
+    }
+
+    public ne(other:Point) {
+        return this !== other
     }
 
 }
