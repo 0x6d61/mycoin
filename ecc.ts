@@ -78,25 +78,43 @@ export class Point {
     public readonly x: number
     public readonly y: number
 
-    constructor(x: number, y: number, a: number, b: number) {
+    constructor(x: number | null, y: number | null, a: number, b: number) {
         this.a = a
         this.b = b
         this.x = x
         this.y = y
-
+        if (this.x === null && this.y === null) return
         if (this.y ** 2 !== this.x ** 3 + a * x + b) {
             throw `(${x},${y}) is not on the curve`
         }
     }
 
-    public eq(other: Point) {
+    public eq(other: Point):boolean {
         return this.x === other.x &&
             this.y === other.y &&
             this.a === other.a &&
             this.b === other.b
     }
 
-    public ne(other: Point) {
+    public ne(other: Point):boolean {
         return this !== other
+    }
+
+    public show():string {
+        return `Point(${this.x},${this.y},${this.a},${this.b})`
+    }
+
+    public add(other:Point):Point {
+        if(this.a !== other.a || this.b !== other.b) {
+            throw `Points${this.show()}, ${other.show()} are not on the same curve`
+        }
+
+        if (this.x === null) {
+            return other
+        }
+
+        if(other.x === null) {
+            return this
+        }
     }
 }
