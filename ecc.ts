@@ -108,7 +108,6 @@ export class Point {
         if(this.a !== other.a || this.b !== other.b) {
             throw `Points${this.show()}, ${other.show()} are not on the same curve`
         }
-
         if (this.x === null) {
             return other
         }
@@ -116,5 +115,23 @@ export class Point {
         if(other.x === null) {
             return this
         }
+        if(this.x === other.x && this.y !== other.y) {
+            return new Point(null,null,this.a,this.b)
+        }
+        if(this.x !== other.x) {
+            const s = (other.y - this.y) / (other.x - this.x)
+            const x = s**2 - this.x - other.x
+            const y = s * (this.x - x) - this.y
+            return new Point(x,y,this.a,this.b)
+
+        }
+
+        if(this.eq(other)) {
+            const s = (3 * this.x ** 2 + this.a) / (2*this.y)
+            const x = s**2-2*this.x
+            const y = s*(this.x-x)-this.y
+            return new Point(x,y,this.a,this.b)
+        }
+
     }
 }
