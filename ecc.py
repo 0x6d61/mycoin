@@ -115,14 +115,44 @@ class Point:
             x = s**2 - 2 * self.x
             y = s * (self.x - x) - self.y
             return self.__class__(x, y, self.a, self.b)
-            
-    def __rmul__(self,coefficient):
+
+    def __rmul__(self, coefficient):
         coef = coefficient
         current = self
-        result = self.__class__(None,None,self.a,self.b)
+        result = self.__class__(None, None, self.a, self.b)
         while coef:
             if coef & 1:
-                result+=current
-            current+=current
+                result += current
+            current += current
             coef >>= 1
         return result
+
+
+A = 0
+B = 7
+P = 2**256 - 2**32 - 977
+N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
+
+
+class S256Field(FieldElement):
+    def __init__(num):
+        super().__init__(num, P)
+
+    def __repr__(self):
+        return '{:x}'.format(self.num).zfill(64)
+
+
+class S256Point(Point):
+    def __init__(self, x, y):
+        a, b = S256Field(A), S256Field(B)
+        if type(x) == int:
+            super().__init__(S256Field(x), S256Field(y), a, b)
+        else:
+            super().__init__(x, y, a, b)
+
+    def __rmul__(self, coefficient):
+        coef = coefficient % N
+        return super().__rmul__(coef)
+
+G = S256Point(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
+              0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)
